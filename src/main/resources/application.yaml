@@ -1,0 +1,8 @@
+server:
+  servlet:
+    context-path: /shopping/v1
+  port: 1002
+spring:
+  application:
+    name: ab-shopping-java-ms
+  jackson.serialization.write-dates-as-timestamps: false
