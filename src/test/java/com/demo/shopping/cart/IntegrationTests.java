@@ -72,29 +72,5 @@ public class IntegrationTests {
 		 Assertions.assertThat(cart.getCurrency().equalsIgnoreCase("JOD"));
     }
 	
-	@Test
-    public void testCreateReadDeleteProduct() {
-		
-		List<ShopingCartResponse> carts = cartController.getAllCarts("en" ,"abc");
-		int Size = carts.size();
-		String cartId = carts.get(0).getId();
-		int productSize = carts.get(0).getProducts().size();
-		System.out.println("size"+ productSize);
-		ProductRequest request = new ProductRequest();
-		request.setCategory("shoping");
-		request.setDescription("payment");
-		request.setCategory("shoping");
-		request.setId("abc");
-		productController.createShopingCartProduct("en", "abc" ,cartId, request);
-		if(carts.get(0).getProducts().stream().filter(i->i.getId().equals(request.getId())).findFirst().isPresent()) {
-			System.out.println("size1"+ carts.get(0).getProducts().size());
-			Assertions.assertThat(cartController.getAllCarts("en" ,"abc").get(0).getProducts().size()).isEqualTo(productSize);
-		}else {
-			Assertions.assertThat(cartController.getAllCarts("en" ,"abc").get(0).getProducts().size()).isEqualTo(productSize+1);
-		}
-		
-		
-		
-    }
- 
+	
 }
