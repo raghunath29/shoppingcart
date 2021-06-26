@@ -1,0 +1,330 @@
+This is a  Java / Maven / Spring Boot (version 1.5.6) application use to create shopping carts with products.we can get shopping cart and list products in shopping cart.product in each shopping cart should be unique.we can add and delete product in shopping cart
+
+How to Run
+This application is packaged as a war which has Tomcat 8 embedded. No Tomcat or JBoss installation is necessary. You run it using the java -jar command or by right click application and click run as spring boot project.
+
+Clone this repository
+Make sure you are using JDK 1.8 and Maven 3.x
+You can build the project and run the tests by running mvn clean package
+Once successfully built, you can run the service by one of these two methods:
+        java -jar -Dspring.profiles.active=test target/spring-boot-rest-example-0.5.0.war
+or
+        mvn spring-boot:run -Drun.arguments="spring.profiles.active=test"
+Check the stdout or boot_example.log file to make sure no exceptions are thrown
+Once the application runs you should see something like this
+
+2017-08-29 17:31:23.091  INFO 19387 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8090 (http)
+2017-08-29 17:31:23.097  INFO 19387 --- [           main] com.khoubyari.example.Application        : Started Application in 22.285 seconds (JVM running for 23.032)
+About the Service
+The service is just a simple shopping cart REST service with swagger for documentation. It uses an in postgres SQL  to store the data. If your database connection properties work, you can call some REST endpoints defined in com.demo.shopping.cart.controller.cartcontroller and  com.demo.shopping.cart.controller. product conroller on port 1002. (see below)either using swagger UI or postman
+
+More interestingly, you can start calling some of the operational endpoints (see full list below) like /metrics and /health (these are available on port 1002)
+
+You can use this sample service to understand the conventions and configurations that allow you to create a DB-backed RESTful service. Once you understand and get comfortable with the sample app you can add your own services following the same patterns as the sample service.
+
+Here is what this little application demonstrates:
+
+Full integration with the latest Spring Framework: inversion of control, dependency injection, etc.
+Packaging as a single war with embedded container (tomcat 8): No need to install a container separately on the host just run using the java -jar command
+Demonstrates how to set up healthcheck, metrics, info, environment, etc. endpoints automatically on a configured port. Inject your own health / metrics info with a few lines of code.
+Writing a RESTful service using annotation: supports both XML and JSON request / response; simply use desired Accept header in your request
+Exception mapping from application exceptions to the right HTTP response with exception details in the body
+Spring Data Integration with JPA/Hibernate with just a few lines of configuration and familiar annotations.
+Automatic CRUD functionality against the data source using Spring Repository pattern
+Demonstrates MockMVC test framework with associated libraries
+All APIs are "self-documented" by Swagger2 using annotations
+
+code is 80 percent test covered.i have installed both sonarqube and joccobo to analyze code coverage
+mvn sonar:sonar is use to generate coverage in your local sonar qube and you can analyze by going to the link
+
+CIRCLECI is used for continuos integration.code will be automatically build and test in circle ci once you commit your code in GIT.
+
+
+Here are some endpoints you can call:
+
+
+1)Create a shoping cart
+curl --location --request POST 'http://localhost:1001/shopping/v1/api/carts' \
+--header 'accept: application/json' \
+--header 'lang: en' \
+--header 'x-fapi-interaction-id: 4457567568' \
+--header 'Content-Type: application/json' \
+--header 'X-XSRF-TOKEN: ghhfsfthrgisvm3ksaio8d1jsk' \
+--data-raw '{ "countrycode": "JO", "currency": "JOD", "products": [ { "category": "SEARCH", "created": "2021-06-26T05:23:57.916Z", "description": "SEARCH PRODUCT", "id": "ABC", "price": 10, "updated": "2021-06-26T05:
+
+
+Response: HTTP 200
+
+2) Get All carts
+curl -X GET "http://localhost:1001/shopping/v1/api/carts/all" -H "accept: application/json" -H "lang: en" -H "x-fapi-interaction-id: 4457567568" -H "X-XSRF-TOKEN: ghhfsfthrgisvm3ksaio8d1jsk"
+
+Response
+
+Swagger UI
+swagger
+Select a spec
+
+default
+API Documentation for shopping cart 
+ 1.0.0 
+[ Base URL: localhost:1001/shopping/v1 ]http://localhost:1001/shopping/v1/v2/api-docs
+shoping cart API
+SHopping cart - Website
+Send email to SHopping cart
+shoping cart license 1.0
+cart-controller
+Cart Controller
+
+product-controller
+Product Controller
+
+cart
+
+POST
+/api/carts
+createShopingCart
+GET
+/api/carts/{cart-id}
+getShoppingCart
+GET
+/api/carts/all
+getAllCarts
+/get all carts
+
+Parameters
+Cancel
+Name	Description
+lang
+string
+(header)	
+ISO lang code
+en
+x-fapi-interaction-id
+string
+(header)	
+An RFC4122 UID used as a correlation id / Request Id
+
+4457567568
+Execute
+Clear
+Responses
+Response content type
+
+application/json
+Curl
+curl -X GET "http://localhost:1001/shopping/v1/api/carts/all" -H "accept: application/json" -H "lang: en" -H "x-fapi-interaction-id: 4457567568" -H "X-XSRF-TOKEN: ghhfsfthrgisvm3ksaio8d1jsk"
+Request URL
+http://localhost:1001/shopping/v1/api/carts/all
+Server response
+Code	Details
+200	
+Response body
+Download
+[
+  {
+    "id": "210615bcsucg",
+    "countrycode": "JO",
+    "currency": "JOD",
+    "products": [
+      {
+        "id": "210615bcsucg",
+        "description": "abcdef",
+        "category": "selling",
+        "price": 15,
+        "created": "09:08:06",
+        "updated": "09:08:06"
+      }
+    ]
+  },
+  {
+    "id": "2106266ssglk",
+    "countrycode": "JO",
+    "currency": "JOD",
+    "products": [
+      {
+        "id": "ABC",
+        "description": "SEARCH PRODUCT",
+        "category": "SEARCH",
+        "price": 10,
+        "created": "09:24:56",
+        "updated": "09:24:56"
+      }
+    ]
+  },
+  {
+    "id": "210615am6oh1",
+    "countrycode": "JO",
+    "currency": "JOD",
+    "products": [
+      {
+        "id": "210615am6oh2",
+        "description": "string",
+        "category": "string",
+        "price": 0,
+        "created": "23:47:13",
+        "updated": "23:47:13"
+      }
+    ]
+  },
+  {
+    "id": "210626kv9810",
+    "countrycode": "JO",
+    "currency": "JOD",
+    "products": [
+      {
+        "id": "ABC",
+        "description": "SEARCH PRODUCT",
+        "category": "SEARCH",
+        "price": 10,
+        "created": "09:25:37",
+        "updated": "09:25:37"
+      }
+    ]
+  },
+  {
+    "id": "2106249v9ikz",
+    "countrycode": "JO",
+    "currency": "JOD",
+    "products": [
+      {
+        "id": null,
+        "description": "loan amount",
+        "category": "loan",
+        "price": 10,
+        "created": "06:36:46",
+        "updated": "06:36:46"
+      }
+    ]
+  },
+  {
+    "id": "210624vca7b8",
+    "countrycode": "JO",
+    "currency": "JOD",
+    "products": [
+      {
+        "id": null,
+        "description": "loan amount",
+        "category": "loan",
+        "price": 10,
+        "created": "06:46:55",
+        "updated": "06:46:55"
+      }
+    ]
+  },
+  {
+    "id": "210624p3abts",
+    "countrycode": "JO",
+    "currency": "JOD",
+    "products": [
+      {
+        "id": null,
+        "description": "loan amount",
+        "category": "loan",
+        "price": 10,
+        "created": "06:54:25",
+        "updated": "06:54:25"
+      }
+    ]
+  },
+  {
+    "id": "210624xnnfk5",
+    "countrycode": "JO",
+    "currency": "JOD",
+    "products": [
+      {
+        "id": null,
+        "description": "loan amount",
+        "category": "loan",
+        "price": 10,
+        "created": "07:06:04",
+        "updated": "07:06:04"
+      }
+    ]
+  },
+  {
+    "id": "210624j1eypl",
+    "countrycode": "JO",
+    "currency": "JOD",
+    "products": [
+      {
+        "id": null,
+        "description": "loan amount",
+        "category": "loan",
+        "price": 10,
+        "created": "07:08:25",
+        "updated": "07:08:25"
+      }
+    ]
+  },
+  {
+    "id": "210624x3kdq7",
+    "countrycode": "JO",
+    "currency": "JOD",
+    "products": [
+      {
+        "id": null,
+        "description": "loan amount",
+        "category": "loan",
+        "price": 10,
+        "created": "07:09:34",
+        "updated": "07:09:34"
+      }
+    ]
+  },
+  {
+    "id": "210625ye34el",
+    "countrycode": "JO",
+    "currency": "JOD",
+    "products": [
+      {
+        "id": null,
+        "description": "loan amount",
+        "category": "loan",
+        "price": 10,
+        "created": "09:40:36",
+        "updated": "09:40:36"
+      }
+    ]
+  },
+  {
+    "id": "210625srhzth",
+    "countrycode": "JO",
+    "currency": "JOD",
+    "products": [
+      {
+        "id": null,
+        "description": "loan amount",
+        "category": "loan",
+        "price": 10,
+        "created": "10:06:23",
+        "updated": "10:06:23"
+      }
+    ]
+  },
+  {
+    "id": "210625tjvp0c",
+    "countrycode": "JO",
+    "currency": "JOD",
+    "products": [
+      {
+        "id": null,
+        "description": "loan amount",
+        "category": "loan",
+        "price": 10,
+        "created": "10:11:14",
+        "updated": "10:11:14"
+      }
+    ]
+  }
+]
+
+similiarly you can view other end points
+
+
+Models
+Run the server and browse to localhost:1001/swagger-ui.html
+
+
+
+
+Questions and Comments: ragu4pals@gmail.com
